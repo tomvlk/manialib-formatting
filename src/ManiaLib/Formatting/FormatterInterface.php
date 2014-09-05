@@ -22,16 +22,11 @@ interface FormatterInterface
 
     /**
      * Remove codes provided from input string
-     * @param string[] $code
-     * @return static
+     * if no code are provided all styles, colors and links will be stripped
+     * @param string[] $codes
+     * @return static 
      */
-    public function stripCodes(array $code);
-
-    /**
-     * Remove every styles from input string
-     * @return static
-     */
-    public function stripStyles();
+    public function strip(array $codes = array());
 
     /**
      * Remove every links from input string
@@ -45,12 +40,6 @@ interface FormatterInterface
      * @return static
      */
     public function stripColors();
-
-    /**
-     * Remove formating linked to character width from input string
-     * @return static
-     */
-    public function stripWideFonts();
 
     /**
      * Change string colors to increase contrast with backgroundColor
