@@ -1,7 +1,8 @@
 <?php
 //Example of usage of ManiaLib/Formatting/ManiaplanetString
+//I consider for this example that the ManiaplanetString object is immutable
 $referenceString = 'Ceci est une chaine $00FBleue $iItalique $<$i$f00protégée$> $wlarge$g ou $nétroite $sombrée $ograsse $tmajuscule$m avec un $l[lien]lien externe$l et $h[lien]lien interne$h';
-$mpString = new ManiaLib/Formatting/ManiaplanetStringInterface($referenceString);
+$mpString = new ManiaLib\Formatting\ManiaplanetStringInterface($referenceString);
 echo $mpString->stripLinks()->strip('t');
 // output:
 // Ceci est une chaine $00FBleue $iItalique $<$i$f00protégée$> $wlarge$g ou $nétroite $sombrée $ograsse majuscule$m avec un lien externe et lien interne
