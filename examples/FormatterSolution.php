@@ -2,7 +2,7 @@
 //Example of usage of ManiaLib/Formatting/FormatterInterface all in 1 class
 //In this example the Formatter class implements the FormatterInterface
 $referenceString = 'Ceci est une chaine $00FBleue $iItalique $<$i$f00protégée$> $wlarge$g ou $nétroite $sombrée $ograsse $tmajuscule$m avec un $l[lien]lien externe$l et $h[lien]lien interne$h';
-$formatter = new ManiaLib/Formatting/Formatter();
+$formatter = new ManiaLib/Formatting/Formatter($referenceString);
 echo $formatter->stripLinks()->strip('t');
 // output:
 // Ceci est une chaine $00FBleue $iItalique $<$i$f00protégée$> $wlarge$g ou $nétroite $sombrée $ograsse majuscule$m avec un lien externe et lien interne
