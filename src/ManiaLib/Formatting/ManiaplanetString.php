@@ -2,52 +2,26 @@
 
 namespace ManiaLib\Formatting;
 
-class ManiaplanetString implements ManiaplanetStringInterface
+class ManiaplanetString extends AbstractManiaplanetString
 {
-    protected $input;
-
-    public function __construct($input)
-    {
-
-    }
-
-    public function __toString()
-    {
-        
-    }
 
     public function contrastColors($backgroundColor)
     {
-
-    }
-
-    public function getInput()
-    {
-        
-    }
-
-    public function setInput($input)
-    {
-
+        return new static($this->doContrastColors($backgroundColor));
     }
 
     public function strip(string $codes = array())
     {
-        
+        return new static($this->doStrip($codes));
     }
 
     public function stripColors()
     {
-
+        return new static($this->doStripColors());
     }
 
     public function stripLinks()
     {
-        
-    }
-
-    public function toString()
-    {
-
+        return new static($this->doStripLinks());
     }
 }

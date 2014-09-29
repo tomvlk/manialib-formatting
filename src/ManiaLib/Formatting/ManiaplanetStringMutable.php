@@ -2,61 +2,48 @@
 
 namespace ManiaLib\Formatting;
 
-class ManiaplanetStringMutable implements ManiaplanetStringInterface
+class ManiaplanetStringMutable extends AbstractManiaplanetString
 {
     /**
      * @var string
      */
-    protected $input;
-
-    /**
-     * @var string
-     */
-    protected $formattedString;
+    protected $originalString;
 
     public function __construct($input)
     {
-
-    }
-
-    public function __toString()
-    {
-        
+        parent::__construct($input);
+        $this->originalString = $input;
     }
 
     public function contrastColors($backgroundColor)
     {
-
-    }
-
-    public function getInput()
-    {
-        
+        $this->input = $this->doContrastColors($backgroundColor);
+        return $this;
     }
 
     public function setInput($input)
     {
-
+        parent::setInput($input);
+        $this->originalString = $input;
+        return $this;
     }
 
     public function strip(string $codes = array())
     {
-        
+        $this->input = $this->doStrip($codes);
+        return $this;
     }
 
     public function stripColors()
     {
-
+        $this->input = $this->doStripColors();
+        return $this;
     }
 
     public function stripLinks()
     {
-        
-    }
-
-    public function toString()
-    {
-
+        $this->input = $this->doStripLinks();
+        return $this;
     }
 
     /**
@@ -66,6 +53,6 @@ class ManiaplanetStringMutable implements ManiaplanetStringInterface
      */
     public function restore()
     {
-        
+        $this->input = $this->originalString;
     }
 }
