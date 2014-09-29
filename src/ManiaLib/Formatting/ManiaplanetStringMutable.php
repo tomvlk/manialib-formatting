@@ -54,5 +54,6 @@ class ManiaplanetStringMutable extends AbstractManiaplanetString
     public function restore()
     {
         $this->input = $this->originalString;
+        return $this;
     }
 }
