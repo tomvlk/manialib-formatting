@@ -1,6 +1,6 @@
 <?php
 
-namespace ManiaLib\Formatting\Formaters;
+namespace ManiaLib\Formatting\Formatters;
 
 class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
 {
