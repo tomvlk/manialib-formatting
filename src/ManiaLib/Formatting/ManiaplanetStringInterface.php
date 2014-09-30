@@ -21,11 +21,17 @@ interface ManiaplanetStringInterface
 
     /**
      * Remove codes provided from input string
-     * if no code are provided all styles, colors and links will be stripped
      * @param string[] $codes
      * @return static
      */
-    public function strip(array $codes = array());
+    public function strip(array $codes);
+
+    /**
+     * Remove all styles, colors and links from input string
+     * @param string[] $codes
+     * @return static
+     */
+    public function stripAll();
 
     /**
      * Remove every links from input string
