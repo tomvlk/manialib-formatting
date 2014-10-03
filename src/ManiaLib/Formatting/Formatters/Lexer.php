@@ -22,6 +22,8 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
     const T_RESET_WIDE           = 15;
     const T_RESET_COLOR          = 16;
     const T_RESET_STYLES         = 17;
+    const T_OPEN_SQUARE_BRACKET  = 18;
+    const T_CLOSE_SQUARE_BRACKET = 19;
 
     protected function getCatchablePatterns()
     {
@@ -95,6 +97,12 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
                     break;
                 case '>':
                     $type = static::T_CLOSE_STACK;
+                    break;
+                case '[':
+                    $type = static::T_OPEN_SQUARE_BRACKET;
+                    break;
+                case ']':
+                    $type = static::T_CLOSE_SQUARE_BRACKET;
                     break;
             }
         }
