@@ -29,7 +29,7 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
     {
         return array(
             '\$[hlp](\[([^\]]*)\])|\$[hlp]',
-            '\$[iozswnmtg\$<>]{1}',
+            '\$[iozswnmtg\$<>\[\]]{1}',
             '\$[0-9a-f][^\$]{0,2}',
             '[^\$]*'
         );
@@ -37,7 +37,7 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
 
     protected function getNonCatchablePatterns()
     {
-        return array();
+        return array('\$.{1}');
     }
 
     protected function getType(&$value)
