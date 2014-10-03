@@ -53,6 +53,12 @@ abstract class AbstractFormatter
                 case Lexer::T_DOLLAR:
                     $this->addDollar();
                     break;
+                case Lexer::T_OPEN_SQUARE_BRACKET:
+                    $this->addOpenSquareBracket();
+                    break;
+                case Lexer::T_CLOSE_SQUARE_BRACKET:
+                    $this->addCloseSquareBracket();
+                    break;
                 case Lexer::T_ITALIC:
                     $this->parseStyle(static::ITALIC, 'startItalic', 'endItalic');
                     break;
@@ -237,6 +243,10 @@ abstract class AbstractFormatter
     }
 
     protected abstract function addDollar();
+
+    protected abstract function addOpenSquareBracket();
+
+    protected abstract function addCloseSquareBracket();
 
     protected abstract function startItalic();
 

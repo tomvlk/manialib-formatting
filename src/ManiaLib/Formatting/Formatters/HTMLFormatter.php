@@ -128,6 +128,16 @@ class HTMLFormatter extends AbstractFormatter
         $this->formattedString .= $this->none('$');
     }
 
+    protected function addOpenSquareBracket()
+    {
+        $this->formattedString .= $this->none('[');
+    }
+    
+    protected function addCloseSquareBracket()
+    {
+        $this->formattedString .= $this->none(']');
+    }
+
     protected function none($text)
     {
         if ($this->currentStyles) {
