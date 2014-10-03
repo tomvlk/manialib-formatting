@@ -80,7 +80,6 @@ abstract class AbstractFormatter
                 case Lexer::T_EXTERNAL_HIDDEN_LINK:
                     $result = $this->closeLinkIfOpen();
                     if (!$result) {
-                        print_r($this->lexer->lookahead);
                         $link = $this->searchLink(true);
                         $this->openLink(static::EXTERNAL_LINK, 'startExternalLink', array($link));
                     }
@@ -221,6 +220,7 @@ abstract class AbstractFormatter
                 }
             } while ($nextLookahead !== null && !in_array($nextLookahead['type'], $endLinkTokens));
         } else {
+            $this->lexer->moveNext();
             $this->lexer->moveNext();
             $link = $this->lexer->lookahead['value'];
         }
