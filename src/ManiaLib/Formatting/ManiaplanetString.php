@@ -29,7 +29,7 @@ class ManiaplanetString implements ManiaplanetStringInterface
     public function contrastColors($backgroundColor)
     {
         $background = Color::StringToRgb24($backgroundColor);
-        $result = preg_replace_callback('/(?<!\$)((?:\$\$)*)(\$[0-9a-f]{1,3})/iu',
+        $result     = preg_replace_callback('/(?<!\$)((?:\$\$)*)(\$[0-9a-f]{1,3})/iu',
             function($matches) use ($background) {
             $color = Color::StringToRgb24($matches[2]);
             $color = Color::Contrast($color, $background);
@@ -42,23 +42,23 @@ class ManiaplanetString implements ManiaplanetStringInterface
 
     public function strip(array $codes)
     {
-        $linkCodes = preg_grep('/hlp/iu', $codes);
-        $colorCodes = preg_grep('/[0-9a-f]/iu', $codes);
-        $escapedChar = preg_grep('/[\$\[\]]/iu', $codes);
-        $classicCodes = array_diff($codes, $linkCodes, $colorCodes, $escapedChar);
-        $string = $this->input;
-        if($classicCodes) {
-            $string = preg_replace(sprintf('/(?<!\$)((?:\$\$)*)\$[%s]/iu', implode('', $classicCodes)), '$1', $string);
+        $linkCodes    = preg_grep('/hlp/iu', $codes);
+        $colorCodes   = preg_grep('/[0-9a-f]/iu', $codes);
+        $escapedChars = preg_grep('/[\$\[\]]/iu', $codes);
+        $classicCodes = array_diff($codes, $linkCodes, $colorCodes, $escapedChars);
+
+        $result = $this;
+        if ($classicCodes) {
+            $pattern = sprintf('/(?<!\$)((?:\$\$)*)\$[%s]/iu', implode('', $classicCodes));
+            $result  = $result->setInput(preg_replace($pattern, '$1', $result));
         }
-        if($escapedChar) {
-            $string = preg_replace('/\$([\$\[\]])/iu', '$1', $string);
+        if ($escapedChars) {
+            $result = $result->setInput($result)->doStripEscapedChars($escapedChars);
         }
-        if($linkCodes) {
-            $pattern = sprintf('/(?<!\$)((?:\$\$)*)\$[%s](?:\[.*?\]|\[.*?$)?(.*?)(?:\$[%s]|(\$z)|$)/iu', implode('', $linkCodes));
-            $string = preg_replace($pattern, '$1$2$3', $string);
+        if ($linkCodes) {
+            $result = $result->setInput($result)->doStripLinks($linkCodes);
         }
-        $result = $this->setInput($string);
-        if($colorCodes) {
+        if ($colorCodes) {
             return $result->stripColors();
         } else {
             return $result;
@@ -67,9 +67,8 @@ class ManiaplanetString implements ManiaplanetStringInterface
 
     public function stripAll()
     {
-        $string = preg_replace('/(?<!\$)((?:\$\$)*)\$[^$0-9a-hlp\[\]]/iu', '$1', $this->input);
-        $result = preg_replace('/\$([\$\[\]])/iu', '$1', $string);
-		return $this->setInput($result)->stripLinks()->stripColors();
+        $result = preg_replace('/(?<!\$)((?:\$\$)*)\$[^$0-9a-hlp\[\]]/iu', '$1', $this->input);
+        return $this->setInput($result)->doStripEscapedChars(array('$', '[', ']'))->stripLinks()->stripColors();
     }
 
     public function stripColors()
@@ -80,12 +79,28 @@ class ManiaplanetString implements ManiaplanetStringInterface
 
     public function stripLinks()
     {
-        $result = preg_replace('/(?<!\$)((?:\$\$)*)\$[hlp](?:\[.*?\]|\[.*?$)?(.*?)(?:\$[hlp]|(\$z)|$)/iu', '$1$2$3', $this->input);
-        return $this->setInput($result);
+        return $this->doStripLinks();
     }
 
     public function toString()
     {
-        return (string)$this;
+        return (string) $this;
+    }
+
+    protected function doStripLinks(array $codes = array('h', 'l', 'p'))
+    {
+        $pattern = sprintf(
+            '/(?<!\$)((?:\$\$)*)\$[%s](?:\[.*?\]|\[.*?$)?(.*?)(?:\$[%1$s]|(\$z)|$)/iu',
+            implode('', $codes)
+        );
+        $result  = preg_replace($pattern, '$1$2$3', $this->input);
+        return $this->setInput($result);
+    }
+
+    protected function doStripEscapedChars(array $codes = array('$', '[', ']'))
+    {
+        $pattern = sprintf('/\$([%s])/iu', addcslashes(implode('', $codes), '$[]'));
+        $result  = preg_replace($pattern, '$1', $this->input);
+        return $this->setInput($result);
     }
 }
