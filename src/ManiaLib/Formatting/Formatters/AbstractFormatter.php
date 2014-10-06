@@ -47,7 +47,6 @@ abstract class AbstractFormatter
 
     public function getFormattedString()
     {
-        $finalString = '';
         while ($this->lexer->moveNext()) {
             switch ($this->lexer->lookahead['type']) {
                 case Lexer::T_DOLLAR:
