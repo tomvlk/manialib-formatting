@@ -80,8 +80,8 @@ abstract class AbstractFormatter
                     $this->parseStyle(static::CAPITAL, 'startCapitalized', 'endCapitalized');
                     break;
                 case Lexer::T_COLOR:
-                    $this->openStyle(static::COLOR, 'startColor',
-                        array($this->lexer->lookahead['value']));
+                    $color = sprintf('%-04s', $this->lexer->lookahead['value']);
+                    $this->openStyle(static::COLOR, 'startColor', array($color));
                     break;
                 case Lexer::T_EXTERNAL_HIDDEN_LINK:
                     $result = $this->closeLinkIfOpen();

@@ -30,7 +30,7 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
         return array(
             '\$[hlp](\[([^\]]*)\])|\$[hlp]',
             '\$[iozswnmtg\$<>\[\]]{1}',
-            '\$[0-9a-f][^\$]{0,2}',
+            '\$[0-9a-f]{1,3}',
             '[^\$]*'
         );
     }
@@ -45,7 +45,7 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
         $type = static::T_NONE;
         if (substr($value, 0, 1) == '$') {
             $style = strtolower(substr($value, 1));
-            if (strlen($style) > 1 && substr($style, 1, 1) !== '[') {
+            if (preg_match('/\$[0-9a-f]/iu', $value)) {
                 return self::T_COLOR;
             } elseif (strlen($style) > 1) {
                 if (substr($style, 0, 1) == 'h' || substr($style, 0, 1) == 'p') {
