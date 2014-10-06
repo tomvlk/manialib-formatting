@@ -1,18 +1,18 @@
 {
-    "name": "manialib/formating",
+    "name": "maniaplanet/manialib-formatting",
     "require": {
-		"doctrine/lexer": "1.0.*@dev"
+        "doctrine/lexer": "1.0.*@dev"
     },
-	"repositories": [
+    "repositories": [
         {
             "type": "composer",
             "url": "https://composer.live.maniaplanet.com",
-			"options": {
-				"ssl": {
-					"cafile": "/etc/ssl/cacert.crt",
-					"verify_peer": "true"
-				}
-			}
+            "options": {
+                "ssl": {
+                    "cafile": "/etc/ssl/cacert.crt",
+                    "verify_peer": "true"
+                }
+            }
         }
     ]
 }
