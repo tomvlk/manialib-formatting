@@ -86,6 +86,9 @@ abstract class AbstractFormatter
                     $result = $this->closeLinkIfOpen();
                     if (!$result) {
                         $link = $this->searchLink(true);
+                        if($link) {
+                            continue;
+                        }
                         $this->openLink(static::EXTERNAL_LINK, 'startExternalLink', array($link));
                     }
                     break;
@@ -93,21 +96,32 @@ abstract class AbstractFormatter
                     $result = $this->closeLinkIfOpen();
                     if (!$result) {
                         $link = $this->searchLink(false);
+                        if(!$link) {
+                            continue;
+                        }
                         $this->openLink(static::EXTERNAL_LINK, 'startExternalLink', array($link));
                     }
                     break;
                 case Lexer::T_INTERNAL_HIDDEN_LINK:
                     $result = $this->closeLinkIfOpen();
                     if (!$result) {
-                        $link = $this->secureInternalLink($this->searchLink(true));
-                        $this->openLink(static::INTERNAL_LINK, 'startInternalLink', array($link));
+                        $link = $this->searchLink(true);
+                        if (!$link) {
+                            continue;
+                        }
+                        $securedLink = $this->secureInternalLink($link);
+                        $this->openLink(static::INTERNAL_LINK, 'startInternalLink', array($securedLink));
                     }
                     break;
                 case Lexer::T_INTERNAL_LINK:
                     $result = $this->closeLinkIfOpen();
                     if (!$result) {
-                        $link = $this->secureInternalLink($this->searchLink(false));
-                        $this->openLink(static::INTERNAL_LINK, 'startInternalLink', array($link));
+                        $link = $this->searchLink(false);
+                        if(!$link) {
+                            continue;
+                        }
+                        $securedLink = $this->secureInternalLink($link);
+                        $this->openLink(static::INTERNAL_LINK, 'startInternalLink', array($securedLink));
                     }
                     break;
                 case Lexer::T_OPEN_STACK:
@@ -224,10 +238,20 @@ abstract class AbstractFormatter
                     $link .= $nextLookahead['value'];
                 }
             } while ($nextLookahead !== null && !in_array($nextLookahead['type'], $endLinkTokens));
+            if(substr($link, 0, 1) == '[') {
+                $link = false;
+                while($this->lexer->lookahead != $nextLookahead) {
+                    $this->lexer->moveNext();
+                }
+            }
         } else {
             $this->lexer->moveNext();
-            $this->lexer->moveNext();
-            $link = $this->lexer->lookahead['value'];
+            $matches = array();
+            if(preg_match('/^\[([^\]]*)\]$/iu', $this->lexer->lookahead['value'], $matches)) {
+                $link = $matches[1];
+            }else {
+                $link = false;
+            }
         }
         return $link;
     }

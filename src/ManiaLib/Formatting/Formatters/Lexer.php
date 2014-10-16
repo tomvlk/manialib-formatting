@@ -28,7 +28,7 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
     protected function getCatchablePatterns()
     {
         return array(
-            '\$[hlp](\[([^\]]*)\])|\$[hlp]',
+            '\$[hlp](\[[^\]]*\])|\$[hlp]',
             '\$[iozswnmtg\$<>\[\]]{1}',
             '\$[0-9a-f]{1,3}',
             '[^\$]*'
