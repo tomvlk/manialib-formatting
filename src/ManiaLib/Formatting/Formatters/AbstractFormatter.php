@@ -79,7 +79,7 @@ abstract class AbstractFormatter
                     $this->parseStyle(static::CAPITAL, 'startCapitalized', 'endCapitalized');
                     break;
                 case Lexer::T_COLOR:
-                    $color = sprintf('%-04s', $this->lexer->lookahead['value']);
+                    $color = preg_replace("/([^$0-9a-f])/iu", "0", $this->lexer->lookahead['value']);
                     $this->openStyle(static::COLOR, 'startColor', array($color));
                     break;
                 case Lexer::T_EXTERNAL_HIDDEN_LINK:

@@ -30,7 +30,7 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
         return array(
             '\$[hlp](\[[^\]]*\])|\$[hlp]',
             '\$[iozswnmtg\$<>\[\]]{1}',
-            '\$[0-9a-f]{1,3}',
+            '\$[0-9a-f][^\$]{0,2}',
             '[^\$]*'
         );
     }
