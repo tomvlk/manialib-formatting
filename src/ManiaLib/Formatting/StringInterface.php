@@ -2,29 +2,16 @@
 
 namespace ManiaLib\Formatting;
 
-interface ManiaplanetStringInterface
+interface StringInterface
 {
-    public function __construct($input);
-
-    /**
-     * Init string to edit
-     * @param string $input
-     * @return static
-     */
-    public function setInput($input);
-
-    /**
-     * Return original string
-     * @return string
-     */
-    public function getInput();
+    public function __construct($string);
 
     /**
      * Remove codes provided from input string
-     * @param string[] $codes
+     * @param string $codes
      * @return static
      */
-    public function strip(array $codes);
+    public function strip($codes);
 
     /**
      * Remove all styles, colors and links from input string
@@ -45,6 +32,13 @@ interface ManiaplanetStringInterface
      * @return static
      */
     public function stripColors();
+
+    /**
+     * Replace escaped characters by their value
+     * i.e: $$ will be replaced by $
+     * @return static
+     */
+    public function stripEscapeCharacters();
 
     /**
      * Change string colors to increase contrast with backgroundColor

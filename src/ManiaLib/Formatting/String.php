@@ -2,13 +2,13 @@
 
 namespace ManiaLib\Formatting;
 
-class ManiaplanetString implements ManiaplanetStringInterface
+class String implements StringInterface
 {
-    protected $input;
+    protected $string;
 
     public function __construct($input)
     {
-        $this->input = $input;
+        $this->string = $input;
     }
 
     public function __toString()
@@ -18,7 +18,7 @@ class ManiaplanetString implements ManiaplanetStringInterface
 
     public function getInput()
     {
-        return $this->input;
+        return $this->string;
     }
 
     public function setInput($input)
@@ -36,7 +36,7 @@ class ManiaplanetString implements ManiaplanetStringInterface
             $color = Color::Rgb24ToRgb12($color);
             $color = Color::Rgb12ToString($color);
             return $matches[1].'$'.$color;
-        }, $this->input);
+        }, $this->string);
         return $this->setInput($result);
     }
 
@@ -67,13 +67,13 @@ class ManiaplanetString implements ManiaplanetStringInterface
 
     public function stripAll()
     {
-        $result = preg_replace('/(?<!\$)((?:\$\$)*)\$[^$0-9a-hlp\[\]]/iu', '$1', $this->input);
+        $result = preg_replace('/(?<!\$)((?:\$\$)*)\$[^$0-9a-hlp\[\]]/iu', '$1', $this->string);
         return $this->setInput($result)->doStripEscapedChars(array('$', '[', ']'))->stripLinks()->stripColors();
     }
 
     public function stripColors()
     {
-        $result = preg_replace('/(?<!\$)((?:\$\$)*)\$(?:g|[0-9a-f][^\$]{0,2})/iu', '$1', $this->input);
+        $result = preg_replace('/(?<!\$)((?:\$\$)*)\$(?:g|[0-9a-f][^\$]{0,2})/iu', '$1', $this->string);
         return $this->setInput($result);
     }
 
@@ -93,14 +93,14 @@ class ManiaplanetString implements ManiaplanetStringInterface
             '/(?<!\$)((?:\$\$)*)\$[%s](?:\[.*?\]|\[.*?$)?(.*?)(?:\$[%1$s]|(\$z)|$)/iu',
             implode('', $codes)
         );
-        $result  = preg_replace($pattern, '$1$2$3', $this->input);
+        $result  = preg_replace($pattern, '$1$2$3', $this->string);
         return $this->setInput($result);
     }
 
     protected function doStripEscapedChars(array $codes = array('$', '[', ']'))
     {
         $pattern = sprintf('/\$([%s])/iu', addcslashes(implode('', $codes), '$[]'));
-        $result  = preg_replace($pattern, '$1', $this->input);
+        $result  = preg_replace($pattern, '$1', $this->string);
         return $this->setInput($result);
     }
 }
