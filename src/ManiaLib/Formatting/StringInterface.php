@@ -51,11 +51,5 @@ interface StringInterface
      * Return the modified string
      * @return string
      */
-    public function toString();
-
-    /**
-     * Return the modified string
-     * @return string
-     */
     public function __toString();
 }
