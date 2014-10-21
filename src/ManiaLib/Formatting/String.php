@@ -6,24 +6,14 @@ class String implements StringInterface
 {
     protected $string;
 
-    public function __construct($input)
+    public function __construct($string)
     {
-        $this->string = $input;
+        $this->string = $string;
     }
 
     public function __toString()
     {
-        return $this->getInput();
-    }
-
-    public function getInput()
-    {
         return $this->string;
-    }
-
-    public function setInput($input)
-    {
-        return new static($input);
     }
 
     public function contrastColors($backgroundColor)
@@ -37,10 +27,10 @@ class String implements StringInterface
             $color = Color::Rgb12ToString($color);
             return $matches[1].'$'.$color;
         }, $this->string);
-        return $this->setInput($result);
+        return $this;
     }
 
-    public function strip(array $codes)
+    public function strip($codes)
     {
         $linkCodes    = preg_grep('/hlp/iu', $codes);
         $colorCodes   = preg_grep('/[0-9a-f]/iu', $codes);
@@ -82,7 +72,7 @@ class String implements StringInterface
         return $this->doStripLinks();
     }
 
-    public function toString()
+    public function stripEscapeCharacters()
     {
         return (string) $this;
     }
