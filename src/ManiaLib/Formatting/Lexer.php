@@ -48,6 +48,58 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
 
     protected function getType(&$value)
     {
-        
+        $type = static::T_NONE;
+        if (substr($value, 0, 1) == '$') {
+            $style = strtolower(substr($value, 1));
+            if (preg_match('/^[0-9a-f]/iu', $style)) {
+                $type = static::T_COLOR;
+            } elseif (strlen($style) > 1) {
+                if (preg_match('/^[hp]/iu', $style)) {
+                    $type = static::T_INTERNAL_HIDDEN_LINK;
+                } else {
+                    $type = static::T_EXTERNAL_HIDDEN_LINK;
+                }
+            } else {
+                switch ($style) {
+                    case '$': $style = static::T_DOLLAR_CHAR;
+                        break;
+                    case '[': $style = static::T_SQUARE_BRACKET_OPENING_CHAR;
+                        break;
+                    case ']': $style = static::T_SQUARE_BRACKET_CLOSING_CHAR;
+                        break;
+                    case 'g': $style = static::T_NO_COLOR;
+                        break;
+                    case 's': $style = static::T_SHADOWED;
+                        break;
+                    case 'b': $style = static::T_BOLD;
+                        break;
+                    case 'i': $style = static::T_ITALIC;
+                        break;
+                    case 'w': $style = static::T_WIDE;
+                        break;
+                    case 'n': $style = static::T_NARROW;
+                        break;
+                    case 'm': $style = static::T_MEDIUM;
+                        break;
+                    case 't': $style = static::T_UPPERCASE;
+                        break;
+                    case 'z': $style = static::T_RESET_ALL;
+                        break;
+                    case '<': $style = static::T_PUSH;
+                        break;
+                    case '>': $style = static::T_POP;
+                        break;
+                    case 'h':
+                        //nobreak
+                    case 'p': $style = static::T_INTERNAL_LINK;
+                        break;
+                    case 'l': $style = static::T_EXTERNAL_LINK;
+                        break;
+                    default:
+                        $style = static::T_UNKNOWN_MARKUP;
+                }
+            }
+        }
+        return $type;
     }
 }
