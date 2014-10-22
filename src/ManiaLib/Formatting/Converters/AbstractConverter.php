@@ -50,7 +50,6 @@ abstract class AbstractConverter implements ConverterInterface
     protected function parseString()
     {
         while ($this->lexer->moveNext()) {
-            print_r($this->lexer->lookahead);
             switch ($this->lexer->lookahead['type']) {
                 case Lexer::T_NONE:
                     break;
