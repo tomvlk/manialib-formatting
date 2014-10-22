@@ -179,8 +179,8 @@ abstract class AbstractConverter implements ConverterInterface
         return $link;
     }
 
-    abstract protected function none();
-    abstract protected function escapedCharacter();
+    abstract protected function none($value);
+    abstract protected function escapedCharacter($value);
     abstract protected function color();
     abstract protected function shadowed();
     abstract protected function bold();
