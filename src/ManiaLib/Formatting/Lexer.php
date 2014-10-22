@@ -7,9 +7,7 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
     //No Style
     const T_NONE = 0;
     // Escaped charaters
-    const T_DOLLAR_CHAR = 1;
-    const T_SQUARE_BRACKET_OPENING_CHAR = 2;
-    const T_SQUARE_BRACKET_CLOSING_CHAR = 3;
+    const T_ESCAPED_CHAR = 1;
     //Modifiers
     const T_COLOR = 4;
     const T_NO_COLOR = 5;
@@ -62,11 +60,12 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
                 }
             } else {
                 switch ($style) {
-                    case '$': $type = static::T_DOLLAR_CHAR;
-                        break;
-                    case '[': $type = static::T_SQUARE_BRACKET_OPENING_CHAR;
-                        break;
-                    case ']': $type = static::T_SQUARE_BRACKET_CLOSING_CHAR;
+                    case '$': 
+                        // no break
+                    case '[': 
+                        // no break
+                    case ']':
+                        $type = static::T_ESCAPED_CHAR;
                         break;
                     case 'g': $type = static::T_NO_COLOR;
                         break;
