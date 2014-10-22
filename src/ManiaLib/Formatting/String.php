@@ -40,14 +40,15 @@ class String implements StringInterface
         preg_match_all('/[\$\[\]]/iu', $codes, $escapedChars);
 
         if (count($linkCodes[0])) {
-            $this->string = $this->doStripLinks(array_unique($linkCodes[0]));
+            $this->string = (string)$this->doStripLinks(array_unique($linkCodes[0]));
         }
         if(count($colorCodes[0])) {
-           $this->string = $this->stripColors();
+           $this->string = (string)$this->stripColors();
         }
-        $this->string = sprintf('/(?<!\$)((?:\$[\$\[\]])*)\$[%s]/iu', $codes);
+        $pattern = sprintf('/(?<!\$)((?:\$[\$\[\]])*)\$[%s]/iu', $codes);
+        $this->string = preg_replace($pattern, '$1', $this->string);
         if(count($escapedChars[0])) {
-            $this->string = $this->doStripEscapedChars(array_unique($escapedChars[0]));
+            $this->string = (string)$this->doStripEscapedChars(array_unique($escapedChars[0]));
         }
         return $this;
     }
