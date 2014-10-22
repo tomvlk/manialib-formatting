@@ -1,18 +1,28 @@
 {
     "name": "maniaplanet/manialib-formatting",
+    "type": "library",
+    "description": "Object-oriented PHP library to manipulate styles in Maniaplanet strings.",
+    "keywords": ["ManiaPlanet", "ShootMania", "TrackMania"],
+    "license": "MIT",
+    "homepage": "https://github.com/maniaplanet/manialib-formatting",
+    "authors": [
+        {
+            "name": "Nadeo",
+            "email": "contact@nadeo.com",
+            "homepage": "http://www.nadeo.com/"
+        }
+    ],
+    "support": {
+        "forum": "https://github.com/maniaplanet/manialib-formatting/issues"
+    },
     "require": {
+        "php": ">=5.3",
         "doctrine/lexer": "1.0.*@dev"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://composer.live.maniaplanet.com",
-            "options": {
-                "ssl": {
-                    "cafile": "/etc/ssl/cacert.crt",
-                    "verify_peer": "true"
-                }
-            }
-        }
-    ]
+    "autoload": {
+        "psr-4": {"ManiaLib\\": "src/ManiaLib/"}
+    },
+    "archive": {
+        "exclude": ["/examples"]
+    }
 }
