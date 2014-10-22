@@ -6,6 +6,7 @@ class Style
 {
     protected $bold = false;
     protected $italic = false;
+    protected $shadowed = false;
     protected $width = 1;
     protected $uppercase = false;
     protected $color;
@@ -20,7 +21,12 @@ class Style
         return $this->italic;
     }
 
-    function getWidth()
+    public function isShadowed()
+    {
+        return $this->shadowed;
+    }
+
+    public function getWidth()
     {
         return $this->width;
     }
@@ -45,7 +51,12 @@ class Style
         $this->italic = $italic;
     }
 
-    function setWidth($width)
+    public function setShadowed($shadowed)
+    {
+        $this->shadowed = $shadowed;
+    }
+
+    public function setWidth($width)
     {
         $this->width = $width;
     }
