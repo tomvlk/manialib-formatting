@@ -52,12 +52,15 @@ abstract class AbstractConverter implements ConverterInterface
         while ($this->lexer->moveNext()) {
             switch ($this->lexer->lookahead['type']) {
                 case Lexer::T_NONE:
+                    $this->none($value);
                     break;
                 case Lexer::T_ESCAPED_CHAR:
+                    $this->escapedCharacter($value);
                     break;
                 case Lexer::T_COLOR:
                     $color = preg_replace('/([^0-9a-f])/iu', '0', $value);
                     $this->currentStyle->setColor($color);
+                    $this->color();
                     break;
                 case Lexer::T_NO_COLOR:
                     if ($this->stylesStack) {
@@ -66,27 +69,35 @@ abstract class AbstractConverter implements ConverterInterface
                         $color = null;
                     }
                     $this->currentStyle->setColor($color);
+                    $this->color();
                     break;
                 case Lexer::T_SHADOWED:
                     $this->currentStyle->setShadowed(!$this->currentStyle->isShadowed());
+                    $this->shadowed();
                     break;
                 case Lexer::T_BOLD:
                     $this->currentStyle->setBold(!$this->currentStyle->isBold());
+                    $this->bold();
                     break;
                 case Lexer::T_ITALIC:
                     $this->currentStyle->setItalic(!$this->currentStyle->isItalic());
+                    $this->italic();
                     break;
                 case Lexer::T_WIDE:
                     $this->currentStyle->setWidth(2);
+                    $this->wide();
                     break;
                 case Lexer::T_NARROW:
                     $this->currentStyle->setWidth(0);
+                    $this->narrow();
                     break;
                 case Lexer::T_MEDIUM:
                     $this->currentStyle->setWidth(1);
+                    $this->medium();
                     break;
                 case Lexer::T_UPPERCASE:
                     $this->currentStyle->setUppercase(!$this->currentStyle->isUppercase());
+                    $this->upperCase();
                     break;
                 case Lexer::T_RESET_ALL:
                     if($this->stylesStack) {
@@ -96,25 +107,32 @@ abstract class AbstractConverter implements ConverterInterface
                     }
                     $this->currentStyle = $style;
                     $this->isInLink = false;
+                    $this->resetAll();
                     break;
                 case Lexer::T_PUSH:
                     array_push($this->stylesStack, $this->currentStyle);
+                    $this->pushStyle();
                     break;
                 case Lexer::T_POP:
                     $this->currentStyle = array_pop($this->stylesStack);
+                    $this->popStyle();
                     break;
                 case Lexer::T_EXTERNAL_LINK:
                     $this->isInLink = !$this->isInLink;
                     if ($this->isInLink) {
                         $link = $this->getLink();
+                        $this->openExternalLink($link);
                     } else {
+                        $this->closeExternalLink();
                     }
                     break;
                 case Lexer::T_INTERNAL_LINK:
                     $this->isInLink = !$this->isInLink;
                     if ($this->isInLink) {
                         $link = $this->getLink();
+                        $this->openInternalLink($link);
                     } else {
+                        $this->closeInternalLink();
                     }
                     break;
                 case Lexer::T_UNKNOWN_MARKUP:
@@ -160,5 +178,23 @@ abstract class AbstractConverter implements ConverterInterface
         }
         return $link;
     }
+
+    abstract protected function none();
+    abstract protected function escapedCharacter();
+    abstract protected function color();
+    abstract protected function shadowed();
+    abstract protected function bold();
+    abstract protected function italic();
+    abstract protected function wide();
+    abstract protected function narrow();
+    abstract protected function medium();
+    abstract protected function upperCase();
+    abstract protected function resetAll();
+    abstract protected function pushStyle();
+    abstract protected function popStyle();
+    abstract protected function openExternalLink($link);
+    abstract protected function closeExternalLink();
+    abstract protected function openInternalLink($link);
+    abstract protected function closeInternalLink();
 
 }
