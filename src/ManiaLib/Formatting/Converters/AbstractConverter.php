@@ -157,7 +157,7 @@ abstract class AbstractConverter implements ConverterInterface
     {
         $link = '';
         if (
-            substr($this->lexer->lookahead['value'], 0, 1) == '['
+            substr($this->lexer->lookahead['value'], 1, 1) == '['
             && substr($this->lexer->lookahead['value'], -1, 1) == ']'
             ) {
             //We are looking for a link like $h[xxx]yyy$h
