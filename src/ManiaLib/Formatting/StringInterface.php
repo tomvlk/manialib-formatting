@@ -38,7 +38,7 @@ interface StringInterface
      * i.e: $$ will be replaced by $
      * @return static
      */
-    public function stripEscapeCharacters();
+    public function stripEscapeCharacter();
 
     /**
      * Change string colors to increase contrast with backgroundColor

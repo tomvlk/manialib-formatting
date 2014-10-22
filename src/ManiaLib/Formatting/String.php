@@ -55,7 +55,7 @@ class String implements StringInterface
     public function stripAll()
     {
         $this->string = preg_replace('/(?<!\$)((?:\$\$)*)\$[^$0-9a-fhlp\[\]]/iu', '$1', $this->string);
-        return $this->stripEscapeCharacters()->stripLinks()->stripColors();
+        return $this->stripEscapeCharacter()->stripLinks()->stripColors();
     }
 
     public function stripColors()
@@ -69,7 +69,7 @@ class String implements StringInterface
         return $this->doStripLinks();
     }
 
-    public function stripEscapeCharacters()
+    public function stripEscapeCharacter()
     {
         return $this->doStripEscapedChars();
     }
