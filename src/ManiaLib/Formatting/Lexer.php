@@ -62,42 +62,42 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
                 }
             } else {
                 switch ($style) {
-                    case '$': $style = static::T_DOLLAR_CHAR;
+                    case '$': $type = static::T_DOLLAR_CHAR;
                         break;
-                    case '[': $style = static::T_SQUARE_BRACKET_OPENING_CHAR;
+                    case '[': $type = static::T_SQUARE_BRACKET_OPENING_CHAR;
                         break;
-                    case ']': $style = static::T_SQUARE_BRACKET_CLOSING_CHAR;
+                    case ']': $type = static::T_SQUARE_BRACKET_CLOSING_CHAR;
                         break;
-                    case 'g': $style = static::T_NO_COLOR;
+                    case 'g': $type = static::T_NO_COLOR;
                         break;
-                    case 's': $style = static::T_SHADOWED;
+                    case 's': $type = static::T_SHADOWED;
                         break;
-                    case 'b': $style = static::T_BOLD;
+                    case 'b': $type = static::T_BOLD;
                         break;
-                    case 'i': $style = static::T_ITALIC;
+                    case 'i': $type = static::T_ITALIC;
                         break;
-                    case 'w': $style = static::T_WIDE;
+                    case 'w': $type = static::T_WIDE;
                         break;
-                    case 'n': $style = static::T_NARROW;
+                    case 'n': $type = static::T_NARROW;
                         break;
-                    case 'm': $style = static::T_MEDIUM;
+                    case 'm': $type = static::T_MEDIUM;
                         break;
-                    case 't': $style = static::T_UPPERCASE;
+                    case 't': $type = static::T_UPPERCASE;
                         break;
-                    case 'z': $style = static::T_RESET_ALL;
+                    case 'z': $type = static::T_RESET_ALL;
                         break;
-                    case '<': $style = static::T_PUSH;
+                    case '<': $type = static::T_PUSH;
                         break;
-                    case '>': $style = static::T_POP;
+                    case '>': $type = static::T_POP;
                         break;
                     case 'h':
                         //nobreak
-                    case 'p': $style = static::T_INTERNAL_LINK;
+                    case 'p': $type = static::T_INTERNAL_LINK;
                         break;
-                    case 'l': $style = static::T_EXTERNAL_LINK;
+                    case 'l': $type = static::T_EXTERNAL_LINK;
                         break;
                     default:
-                        $style = static::T_UNKNOWN_MARKUP;
+                        $type = static::T_UNKNOWN_MARKUP;
                 }
             }
         }
