@@ -4,7 +4,6 @@ ManiaLib\Formatting
 
 ManiaLib\Formatting is an object-oriented PHP library to manipulate styles in Maniaplanet strings.
 
-This package is still in developpment
 
 Installation
 -----------------------------
@@ -14,7 +13,7 @@ Installation
 ```JSON
 {
 	"require": {
-        "maniaplanet/manialib-formatting": "dev-master"
+        "maniaplanet/manialib-formatting": "0.1.*@dev"
     }
 }
 ```
