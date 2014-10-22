@@ -33,6 +33,11 @@ abstract class AbstractConverter implements ConverterInterface
      */
     protected $result = '';
 
+    /**
+     * @var array
+     */
+    protected $lookaheadToSkip = array();
+
     public function __construct($string)
     {
         $this->lexer = new Lexer();
@@ -51,6 +56,11 @@ abstract class AbstractConverter implements ConverterInterface
     protected function parseString()
     {
         while ($this->lexer->moveNext()) {
+            if(in_array($this->lexer->lookahead, $this->lookaheadToSkip)) {
+                continue;
+            }
+            
+            $value = $this->lexer->lookahead['value'];
             switch ($this->lexer->lookahead['type']) {
                 case Lexer::T_NONE:
                     $this->none($value);
@@ -173,9 +183,17 @@ abstract class AbstractConverter implements ConverterInterface
                     ($nextLookahead['type'] == Lexer::T_NONE || $nextLookahead['type'] == Lexer::T_ESCAPED_CHAR)
                 ) {
                     $link .= $nextLookahead['value'];
+                    if(substr($link, 0, 1) == '[') {
+                        //It means that there is no closing square bracket $l[noclosingsquarebracket
+                        array_push($this->lookaheadToSkip, $nextLookahead);
+                    }
                 }
             } while ($nextLookahead !== null && !in_array($nextLookahead['type'], $endLinkTokens));
 
+            if(substr($link, 0, 1) == '[') {
+                //It means that there is no closing square bracket $l[noclosingsquarebracket
+                $link = '';
+            }
         }
         return $link;
     }
