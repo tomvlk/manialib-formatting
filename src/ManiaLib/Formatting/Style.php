@@ -11,12 +11,12 @@ class Style
     protected $uppercase = false;
     protected $color;
 
-    function isBold()
+    public function isBold()
     {
         return $this->bold;
     }
 
-    function isItalic()
+    public function isItalic()
     {
         return $this->italic;
     }
@@ -31,22 +31,22 @@ class Style
         return $this->width;
     }
 
-    function isUppercase()
+    public function isUppercase()
     {
         return $this->uppercase;
     }
 
-    function getColor()
+    public function getColor()
     {
         return $this->color;
     }
 
-    function setBold($bold)
+    public function setBold($bold)
     {
         $this->bold = $bold;
     }
 
-    function setItalic($italic)
+    public function setItalic($italic)
     {
         $this->italic = $italic;
     }
@@ -61,12 +61,12 @@ class Style
         $this->width = $width;
     }
 
-    function setUppercase($uppercase)
+    public function setUppercase($uppercase)
     {
         $this->uppercase = $uppercase;
     }
 
-    function setColor($color)
+    public function setColor($color)
     {
         $this->color = $color;
     }
