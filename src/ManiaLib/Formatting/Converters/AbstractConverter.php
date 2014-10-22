@@ -82,11 +82,7 @@ abstract class AbstractConverter implements ConverterInterface
                     break;
                 case Lexer::T_EXTERNAL_LINK:
                     break;
-                case Lexer::T_EXTERNAL_HIDDEN_LINK:
-                    break;
                 case Lexer::T_INTERNAL_LINK:
-                    break;
-                case Lexer::T_INTERNAL_HIDDEN_LINK:
                     break;
                 case Lexer::T_UNKNOWN_MARKUP:
                     break;

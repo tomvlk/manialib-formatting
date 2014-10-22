@@ -23,9 +23,7 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
     const T_POP = 13;
     //Links
     const T_EXTERNAL_LINK = 14;
-    const T_EXTERNAL_HIDDEN_LINK = 15;
     const T_INTERNAL_LINK = 16;
-    const T_INTERNAL_HIDDEN_LINK = 17;
     //Other markups
     const T_UNKNOWN_MARKUP = 18;
 
@@ -54,9 +52,9 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
                 $type = static::T_COLOR;
             } elseif (strlen($style) > 1) {
                 if (preg_match('/^[hp]/iu', $style)) {
-                    $type = static::T_INTERNAL_HIDDEN_LINK;
+                    $type = static::T_INTERNAL_LINK;
                 } else {
-                    $type = static::T_EXTERNAL_HIDDEN_LINK;
+                    $type = static::T_EXTERNAL_LINK;
                 }
             } else {
                 switch ($style) {
