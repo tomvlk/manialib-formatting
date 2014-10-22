@@ -50,7 +50,8 @@ class Lexer extends \Doctrine\Common\Lexer\AbstractLexer
     {
         $type = static::T_NONE;
         if (substr($value, 0, 1) == '$') {
-            $style = strtolower(substr($value, 1));
+            $value = substr($value, 1);
+            $style = strtolower($value);
             if (preg_match('/^[0-9a-f]/iu', $style)) {
                 $type = static::T_COLOR;
             } elseif (strlen($style) > 1) {
