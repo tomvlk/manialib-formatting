@@ -19,7 +19,7 @@ class String implements StringInterface
     public function contrastColors($backgroundColor)
     {
         $background = Color::StringToRgb24($backgroundColor);
-        $result     = preg_replace_callback('/(?<!\$)((?:\$\$)*)(\$[0-9a-f]{1,3})/iu',
+        $this->string = preg_replace_callback('/(?<!\$)((?:\$[\$])*)(\$[0-9a-f][^\$]{0,2})/iu',
             function($matches) use ($background) {
             $color = Color::StringToRgb24($matches[2]);
             $color = Color::Contrast($color, $background);
@@ -32,39 +32,36 @@ class String implements StringInterface
 
     public function strip($codes)
     {
-        $linkCodes    = preg_grep('/hlp/iu', $codes);
-        $colorCodes   = preg_grep('/[0-9a-f]/iu', $codes);
-        $escapedChars = preg_grep('/[\$\[\]]/iu', $codes);
-        $classicCodes = array_diff($codes, $linkCodes, $colorCodes, $escapedChars);
+        $linkCodes = array();
+        preg_match_all('/[hlp]/iu', $codes, $linkCodes);
+        $colorCodes = array();
+        preg_match_all('/[0-9a-f]/iu', $codes, $colorCodes);
+        $escapedChars = array();
+        preg_match_all('/[\$\[\]]/iu', $codes, $escapedChars);
 
-        $result = $this;
-        if ($classicCodes) {
-            $pattern = sprintf('/(?<!\$)((?:\$\$)*)\$[%s]/iu', implode('', $classicCodes));
-            $result  = $result->setInput(preg_replace($pattern, '$1', $result));
+        if (count($linkCodes[0])) {
+            $this->string = $this->doStripLinks(array_unique($linkCodes[0]));
         }
-        if ($escapedChars) {
-            $result = $result->setInput($result)->doStripEscapedChars($escapedChars);
+        if(count($colorCodes[0])) {
+           $this->string = $this->stripColors();
         }
-        if ($linkCodes) {
-            $result = $result->setInput($result)->doStripLinks($linkCodes);
+        $this->string = sprintf('/(?<!\$)((?:\$[\$\[\]])*)\$[%s]/iu', $codes);
+        if(count($escapedChars[0])) {
+            $this->string = $this->doStripEscapedChars(array_unique($escapedChars[0]));
         }
-        if ($colorCodes) {
-            return $result->stripColors();
-        } else {
-            return $result;
-        }
+        return $this;
     }
 
     public function stripAll()
     {
-        $result = preg_replace('/(?<!\$)((?:\$\$)*)\$[^$0-9a-hlp\[\]]/iu', '$1', $this->string);
-        return $this->setInput($result)->doStripEscapedChars(array('$', '[', ']'))->stripLinks()->stripColors();
+        $this->string = preg_replace('/(?<!\$)((?:\$\$)*)\$[^$0-9a-fhlp\[\]]/iu', '$1', $this->string);
+        return $this->stripEscapeCharacters()->stripLinks()->stripColors();
     }
 
     public function stripColors()
     {
-        $result = preg_replace('/(?<!\$)((?:\$\$)*)\$(?:g|[0-9a-f][^\$]{0,2})/iu', '$1', $this->string);
-        return $this->setInput($result);
+        $this->string = preg_replace('/(?<!\$)((?:\$\$)*)\$(?:[0-9a-f][^\$]{0,2})/iu', '$1', $this->string);
+        return $this;
     }
 
     public function stripLinks()
@@ -74,7 +71,7 @@ class String implements StringInterface
 
     public function stripEscapeCharacters()
     {
-        return (string) $this;
+        return $this->doStripEscapedChars();
     }
 
     protected function doStripLinks(array $codes = array('h', 'l', 'p'))
@@ -83,14 +80,14 @@ class String implements StringInterface
             '/(?<!\$)((?:\$\$)*)\$[%s](?:\[.*?\]|\[.*?$)?(.*?)(?:\$[%1$s]|(\$z)|$)/iu',
             implode('', $codes)
         );
-        $result  = preg_replace($pattern, '$1$2$3', $this->string);
-        return $this->setInput($result);
+        $this->string = preg_replace($pattern, '$1$2$3', $this->string);
+        return $this;
     }
 
     protected function doStripEscapedChars(array $codes = array('$', '[', ']'))
     {
         $pattern = sprintf('/\$([%s])/iu', addcslashes(implode('', $codes), '$[]'));
-        $result  = preg_replace($pattern, '$1', $this->string);
-        return $this->setInput($result);
+        $this->string = preg_replace($pattern, '$1', $this->string);
+        return $this;
     }
 }
