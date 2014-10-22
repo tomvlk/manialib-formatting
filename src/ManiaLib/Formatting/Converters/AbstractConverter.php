@@ -37,6 +37,7 @@ abstract class AbstractConverter implements ConverterInterface
     {
         $this->lexer = new Lexer();
         $this->lexer->setInput($string);
+        $this->currentStyle = new Style();
     }
 
     public function getResult()
